@@ -15,4 +15,22 @@ Include=.\monitoramento-sql\userParameters\*.conf
 Caso você opte por salvá-los em outro diretorio, preencha o caminho completo conforme o exemplo
 #Include=C:\Program Files\Zabbix Agent 2\monitoramento-sql\userParameters\*.conf
 
-Depois de feito upload das pastas bin e monitoramento-sql, bem como o arquivo mssql.backup.userparams.conf no diretório do zabbix agent, crie um usuário no banco com permissoes de leitura a todas as instancias que você deseja monitorar. O usuário e senha deve ser preenchido no arquivo
+Depois de feito upload das pastas bin e monitoramento-sql, bem como o arquivo mssql.backup.userparams.conf no diretório do zabbix agent, crie um usuário no banco com permissoes de leitura a todas as instancias que você deseja monitorar. O usuário e senha deve ser preenchido no arquivo userParameters\discovery.mssql.server.ps1
+
+Para testar, utilize o utilitário zabbix_get no powershell a partir da pasta do zabbix agent. No arquivo de configuração do agente, adicione o ip do proprio servidor a ser monitorado em "Server" para execução do script.
+
+PS C:\Program Files\Zabbix Agent 2> .\zabbix_get -s 172.16.4.10 -k discovery.mssql.databases
+{
+ "data":[
+
+{ "{#MSSQLDBNAME}" : "master" },
+{ "{#MSSQLDBNAME}" : "tempdb" },
+{ "{#MSSQLDBNAME}" : "model" },
+{ "{#MSSQLDBNAME}" : "msdb" },
+
+ ]
+}
+
+O comando acima deve retornar as databases que o usuario cadastrado tem permissao de leitura.
+
+No Zabbix Server, basta adicionar o host monitorado via agente e aplicat o template .xml disponível neste repositorio. Preencha as variaveis {$MSSQLAGENT} , {$MSSQLINST} , {$MSSQLPORTA} e {$MSSQLSERVER} . Embora somente a macro da porta já deve bastar.
