@@ -12,8 +12,8 @@ Param(
 )
 
 # Login SQLSERVER
-$usuario = "MONITOR"
-$senha   = "tekwebber893"
+$usuario = "USUARIO"
+$senha   = "SENHA"
 
 # Monta JSON com o nome de todas as databases. 
 if ( $select -eq 'JSONDB' ) 
