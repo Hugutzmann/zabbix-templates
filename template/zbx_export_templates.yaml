@@ -1,0 +1,925 @@
+zabbix_export:
+  version: '6.0'
+  date: '2023-08-07T19:52:45Z'
+  groups:
+    -
+      uuid: 748ad4d098d447d492bb935c907f652f
+      name: Templates/Databases
+  templates:
+    -
+      uuid: 671b644878954b2db7ba55a42abf814b
+      template: 'Template - Windows LLD MSSQL'
+      name: 'Template - Windows LLD MSSQL'
+      description: |
+        # Desenvolvido por Diego Cavalcante - 06/12/2017
+        # Monitoramento Windows SQLServer
+      groups:
+        -
+          name: Templates/Databases
+      items:
+        -
+          uuid: 9c57c5eefa8c4f2eb8c23a5f5b8ea1e1
+          name: Versão
+          type: ZABBIX_ACTIVE
+          key: 'discovery.mssql.dados[VERSAO]'
+          delay: '86400'
+          history: 15d
+          trends: '0'
+          value_type: CHAR
+          description: 'Versão do SQLServer.'
+          tags:
+            -
+              tag: Application
+              value: '★ MSSQL ★ Geral'
+        -
+          uuid: 15127cc933ad47e1b0387335f46c30f7
+          name: Porta
+          type: ZABBIX_ACTIVE
+          key: 'net.tcp.port[,{$MSSQLPORTA}]'
+          delay: '300'
+          history: 7d
+          trends: 30d
+          description: 'Porta usada pelo MSSQL.'
+          valuemap:
+            name: '★ STATUS ★ Check Porta'
+          tags:
+            -
+              tag: Application
+              value: '★ MSSQL ★ Geral'
+          triggers:
+            -
+              uuid: 510f3fe9d9324cea9915dc5d5f9c1147
+              expression: 'last(/Template - Windows LLD MSSQL/net.tcp.port[,{$MSSQLPORTA}])=0'
+              name: 'MSSQL Porta ({ITEM.LASTVALUE})'
+              priority: WARNING
+              description: 'Porta MSSQL Fechada'
+              manual_close: 'YES'
+        -
+          uuid: 7bf7983eac35474e9655fc6450b32463
+          name: 'Processor Time (%)'
+          type: ZABBIX_ACTIVE
+          key: 'perf_counter[\Process(sqlservr)\% Processor Time]'
+          delay: '300'
+          history: 7d
+          trends: 30d
+          value_type: FLOAT
+          units: '%'
+          description: 'perf_counter[\Process(sqlservr)\% Processor Time]'
+          tags:
+            -
+              tag: Application
+              value: '★ MSSQL ★ Estatísticas'
+        -
+          uuid: eb647bc98482405fa6ceb83ceeeaa9d4
+          name: 'Memória em Uso'
+          type: ZABBIX_ACTIVE
+          key: 'perf_counter[\Process(sqlservr)\Private Bytes]'
+          delay: '300'
+          history: 7d
+          trends: 30d
+          value_type: FLOAT
+          units: B
+          description: |
+            Memória Usada pelo SQL.
+            perf_counter[\Process(sqlservr)\Private Bytes]
+          tags:
+            -
+              tag: Application
+              value: '★ MSSQL ★ Memória'
+        -
+          uuid: 7d8ad6252d754bd3a79b4efde8d519e6
+          name: 'Buffer Cache Hit Ratio (%)'
+          type: ZABBIX_ACTIVE
+          key: 'perf_counter[\{$MSSQLINST}:Buffer Manager\Buffer cache hit ratio]'
+          delay: '300'
+          history: 7d
+          trends: 30d
+          value_type: FLOAT
+          units: '%'
+          description: 'perf_counter[\{$MSSQLINST}:Buffer Manager\Buffer cache hit ratio]'
+          tags:
+            -
+              tag: Application
+              value: '★ MSSQL ★ Memória'
+        -
+          uuid: 785f2208b2fd468a93cbf6d23a9f64f9
+          name: 'Checkpoint Pages por (SEG)'
+          type: ZABBIX_ACTIVE
+          key: 'perf_counter[\{$MSSQLINST}:Buffer Manager\Checkpoint pages/sec]'
+          delay: '300'
+          history: 7d
+          trends: 30d
+          value_type: FLOAT
+          units: p/sec
+          description: 'perf_counter[\{$MSSQLINST}:Buffer Manager\Checkpoint pages/sec]'
+          tags:
+            -
+              tag: Application
+              value: '★ MSSQL ★ Estatísticas'
+        -
+          uuid: c0f13c0071724732a04c4e1d25b80f46
+          name: 'Database Pages'
+          type: ZABBIX_ACTIVE
+          key: 'perf_counter[\{$MSSQLINST}:Buffer Manager\Database pages]'
+          delay: '300'
+          history: 7d
+          trends: 30d
+          value_type: FLOAT
+          description: 'perf_counter[\SQLServer:Buffer Manager\Database pages]'
+          tags:
+            -
+              tag: Application
+              value: '★ MSSQL ★ Estatísticas'
+        -
+          uuid: c288234ce8104a429d2f71349600df18
+          name: 'Lazy Writes por (SEG)'
+          type: ZABBIX_ACTIVE
+          key: 'perf_counter[\{$MSSQLINST}:Buffer Manager\Lazy writes/sec]'
+          delay: '300'
+          history: 7d
+          trends: 30d
+          value_type: FLOAT
+          units: p/sec
+          description: 'perf_counter[\{$MSSQLINST}:Buffer Manager\Lazy writes/sec]'
+          tags:
+            -
+              tag: Application
+              value: '★ MSSQL ★ Estatísticas'
+        -
+          uuid: 9bc7512db51548e4ab07354f713224ed
+          name: 'Page Life Expectancy'
+          type: ZABBIX_ACTIVE
+          key: 'perf_counter[\{$MSSQLINST}:Buffer Manager\Page life expectancy]'
+          delay: '300'
+          history: 7d
+          trends: 30d
+          value_type: FLOAT
+          units: s
+          description: 'perf_counter[\{$MSSQLINST}:Buffer Manager\Page life expectancy]'
+          tags:
+            -
+              tag: Application
+              value: '★ MSSQL ★ Estatísticas'
+        -
+          uuid: c83f50447e9448b6b5f48cba02f84d61
+          name: 'Target Pages'
+          type: ZABBIX_ACTIVE
+          key: 'perf_counter[\{$MSSQLINST}:Buffer Manager\Target pages]'
+          delay: '300'
+          history: 7d
+          trends: 30d
+          description: 'perf_counter[\{$MSSQLINST}:Buffer Manager\Target pages]'
+          tags:
+            -
+              tag: Application
+              value: '★ MSSQL ★ Estatísticas'
+        -
+          uuid: 328a9caa24fc42daab3855d1510aeec6
+          name: 'Total Pages'
+          type: ZABBIX_ACTIVE
+          key: 'perf_counter[\{$MSSQLINST}:Buffer Manager\Total pages]'
+          delay: '300'
+          history: 7d
+          trends: 30d
+          description: 'perf_counter[\{$MSSQLINST}:Buffer Manager\Total pages]'
+          tags:
+            -
+              tag: Application
+              value: '★ MSSQL ★ Estatísticas'
+        -
+          uuid: 4c1c384a3d8e431ba8e99f5ab8ca588b
+          name: 'Tamanho Total das Databases'
+          type: ZABBIX_ACTIVE
+          key: 'perf_counter[\{$MSSQLINST}:Databases(_Total)\Data File(s) Size (KB)]'
+          delay: '3600'
+          history: 15d
+          trends: 90d
+          value_type: FLOAT
+          units: B
+          description: |
+            Tamanho Total dos Bancos de Dados.
+            perf_counter[\{$MSSQLINST}:Databases(_Total)\Data File(s) Size (KB)]
+          preprocessing:
+            -
+              type: MULTIPLIER
+              parameters:
+                - '1024'
+          tags:
+            -
+              tag: Application
+              value: '★ MSSQL ★ Geral'
+        -
+          uuid: 97ad6217da9644f6925123b52a6615f2
+          name: 'Tamanho Total dos Logs'
+          type: ZABBIX_ACTIVE
+          key: 'perf_counter[\{$MSSQLINST}:Databases(_Total)\Log File(s) Size (KB)]'
+          delay: '3600'
+          history: 15d
+          trends: 90d
+          value_type: FLOAT
+          units: B
+          description: |
+            Tamanho Total dos Logs.
+            perf_counter[\{$MSSQLINST}:Databases(_Total)\Log File(s) Size (KB)]
+          preprocessing:
+            -
+              type: MULTIPLIER
+              parameters:
+                - '1024'
+          tags:
+            -
+              tag: Application
+              value: '★ MSSQL ★ Geral'
+        -
+          uuid: 157ce88621b54276b8a06c895402125c
+          name: 'Total de Conexões nas Databases'
+          type: ZABBIX_ACTIVE
+          key: 'perf_counter[\{$MSSQLINST}:General Statistics\User Connections]'
+          delay: '300'
+          history: 7d
+          trends: 30d
+          value_type: FLOAT
+          description: |
+            Numero Total de Conexões nas Databases.
+            perf_counter[\{$MSSQLINST}:General Statistics\User Connections]
+          tags:
+            -
+              tag: Application
+              value: '★ MSSQL ★ Estatísticas'
+        -
+          uuid: a2b64bffa29340ebbe46dfe948842044
+          name: 'Lock Waits por (SEG)'
+          type: ZABBIX_ACTIVE
+          key: 'perf_counter[\{$MSSQLINST}:Locks(_Total)\Lock Waits/sec]'
+          delay: '300'
+          history: 7d
+          trends: 30d
+          units: p/sec
+          description: 'perf_counter[\{$MSSQLINST}:Locks(_Total)\Lock Waits/sec]'
+          tags:
+            -
+              tag: Application
+              value: '★ MSSQL ★ Estatísticas'
+        -
+          uuid: 9581c3cc7f424bf7b73b106682853da0
+          name: 'Memória Grants Pending'
+          type: ZABBIX_ACTIVE
+          key: 'perf_counter[\{$MSSQLINST}:Memory Manager\Memory Grants Pending]'
+          delay: '300'
+          history: 7d
+          trends: 30d
+          description: 'perf_counter[\{$MSSQLINST}:Memory Manager\Memory Grants Pending]'
+          tags:
+            -
+              tag: Application
+              value: '★ MSSQL ★ Memória'
+        -
+          uuid: 70f6396ddf0846a78eed93d168f45a62
+          name: 'Memória em Cache'
+          type: ZABBIX_ACTIVE
+          key: 'perf_counter[\{$MSSQLINST}:Memory Manager\SQL Cache Memory (KB)]'
+          delay: '300'
+          history: 7d
+          trends: 30d
+          value_type: FLOAT
+          units: B
+          description: |
+            Memória em Cache do SQL.
+            perf_counter[\{$MSSQLINST}:Memory Manager\SQL Cache Memory (KB)]
+          preprocessing:
+            -
+              type: MULTIPLIER
+              parameters:
+                - '1024'
+          tags:
+            -
+              tag: Application
+              value: '★ MSSQL ★ Memória'
+        -
+          uuid: 1bfd23419bc64844ba59e76f0d891eb3
+          name: 'Memória Reservada'
+          type: ZABBIX_ACTIVE
+          key: 'perf_counter[\{$MSSQLINST}:Memory Manager\Target Server Memory (KB)]'
+          delay: '3600'
+          history: 7d
+          trends: 30d
+          units: B
+          description: 'perf_counter[\{$MSSQLINST}:Memory Manager\Target Server Memory (KB)]'
+          preprocessing:
+            -
+              type: MULTIPLIER
+              parameters:
+                - '1024'
+          tags:
+            -
+              tag: Application
+              value: '★ MSSQL ★ Memória'
+        -
+          uuid: 0aba3fac688b492ab13910613e9bddf3
+          name: 'Erros por (SEG)'
+          type: ZABBIX_ACTIVE
+          key: 'perf_counter[\{$MSSQLINST}:SQL Errors(_Total)\Errors/sec]'
+          delay: '300'
+          history: 7d
+          trends: 30d
+          value_type: FLOAT
+          units: p/sec
+          description: 'perf_counter[\{$MSSQLINST}:SQL Errors(_Total)\Errors/sec]'
+          tags:
+            -
+              tag: Application
+              value: '★ MSSQL ★ Estatísticas'
+        -
+          uuid: 890ab2b88f2a48a193abb7fef3e7ae7e
+          name: 'SQL Compilations por (SEG)'
+          type: ZABBIX_ACTIVE
+          key: 'perf_counter[\{$MSSQLINST}:SQL Statistics\SQL Compilations/sec]'
+          delay: '300'
+          history: 7d
+          trends: 30d
+          value_type: FLOAT
+          units: p/sec
+          description: 'perf_counter[\{$MSSQLINST}:SQL Statistics\SQL Compilations/sec]'
+          tags:
+            -
+              tag: Application
+              value: '★ MSSQL ★ Estatísticas'
+        -
+          uuid: 1d2179eb867b4bfd9284bbc1c3d94d8a
+          name: 'SQL Server Integration Services 10.0'
+          type: ZABBIX_ACTIVE
+          key: 'service.info[MsDtsServer100]'
+          delay: '300'
+          history: 7d
+          trends: 30d
+          description: |
+            Serviço: MsDtsServer100
+            Nome: SQL Server Integration Services 10.0
+            Descrição: Oferece suporte de gerenciamento para armazenamento e execução de pacotes do SSIS.
+          valuemap:
+            name: '★ STATUS ★ Serviço'
+          tags:
+            -
+              tag: Application
+              value: '★ Serviços ★'
+          triggers:
+            -
+              uuid: 2849651ea6ef4f5796cc57f972f8aab8
+              expression: 'count(/Template - Windows LLD MSSQL/service.info[MsDtsServer100],#3,"gt","0")=3'
+              name: 'SQL Server Integration Services 10.0 ({ITEM.LASTVALUE})'
+              priority: WARNING
+              description: |
+                Serviço: MsDtsServer100
+                Nome: SQL Server Integration Services 10.0
+                Descrição: Oferece suporte de gerenciamento para armazenamento e execução de pacotes do SSIS.
+              manual_close: 'YES'
+        -
+          uuid: d5b141f4c0464ee38c90e3fa57466b7c
+          name: 'SQL Server Agent {$MSSQLAGENT}'
+          type: ZABBIX_ACTIVE
+          key: 'service.info[{$MSSQLAGENT}]'
+          delay: '300'
+          history: 7d
+          trends: 30d
+          description: |
+            Serviço: SQLSERVERAGENT
+            Nome: SQL Server Agent ({$MSSQLAGENT})
+            Descrição: Executa tarefas, monitora o SQL Server, dispara alertas e permite a automação de algumas tarefas administrativas.
+          valuemap:
+            name: '★ STATUS ★ Serviço'
+          tags:
+            -
+              tag: Application
+              value: '★ Serviços ★'
+          triggers:
+            -
+              uuid: 2f2051b199bd4897a9c3a5df6f1711b8
+              expression: 'count(/Template - Windows LLD MSSQL/service.info[{$MSSQLAGENT}],#3,"gt","0")=3'
+              name: 'SQL Server Agent {$MSSQLAGENT} ({ITEM.LASTVALUE})'
+              priority: WARNING
+              description: |
+                Serviço: SQLSERVERAGENT
+                Nome: SQL Server Agent ({$MSSQLAGENT})
+                Descrição: Executa tarefas, monitora o SQL Server, dispara alertas e permite a automação de algumas tarefas administrativas.
+              manual_close: 'YES'
+        -
+          uuid: e60171e72ce24993983094be39cd124f
+          name: 'SQL Server {$MSSQLSERVER}'
+          type: ZABBIX_ACTIVE
+          key: 'service.info[{$MSSQLSERVER}]'
+          delay: '300'
+          history: 7d
+          trends: 30d
+          description: |
+            Serviço: MSSQLSERVER
+            Nome: SQL Server ({$MSSQLSERVER})
+            Descrição: Oferece armazenamento, processamento e acesso controlado de dados e processamento rápido de transações.
+          valuemap:
+            name: '★ STATUS ★ Serviço'
+          tags:
+            -
+              tag: Application
+              value: '★ Serviços ★'
+          triggers:
+            -
+              uuid: ba309ad7926843a98a7936055908c024
+              expression: 'count(/Template - Windows LLD MSSQL/service.info[{$MSSQLSERVER}],#3,"gt","0")=3'
+              name: 'SQL Server {$MSSQLSERVER} ({ITEM.LASTVALUE})'
+              priority: WARNING
+              description: |
+                Serviço: MSSQLSERVER
+                Nome: SQL Server ({$MSSQLSERVER})
+                Descrição: Oferece armazenamento, processamento e acesso controlado de dados e processamento rápido de transações.
+              manual_close: 'YES'
+      discovery_rules:
+        -
+          uuid: a348f67f45604fd98e17236b485f79a4
+          name: '★ Descoberta ★ MSSQL Databases'
+          type: ZABBIX_ACTIVE
+          key: discovery.mssql.databases
+          delay: 30m
+          lifetime: 1d
+          description: 'Descoberta de Bancos de Dados MSSQL Server'
+          item_prototypes:
+            -
+              uuid: 1cc4bdc93bfd486689608b8f77b4c248
+              name: '{#MSSQLDBNAME} Número de Conexões'
+              type: ZABBIX_ACTIVE
+              key: 'discovery.mssql.dados[CONN,{#MSSQLDBNAME}]'
+              delay: '600'
+              history: 7d
+              trends: 30d
+              units: Conexões
+              description: 'Numero de Conexões na Database MSSQL - {#MSSQLDBNAME}'
+              tags:
+                -
+                  tag: Application
+                  value: '★ MSSQL ★ Database Info - {#MSSQLDBNAME}'
+            -
+              uuid: fa0358294d744c0d896a0b3d86dbc079
+              name: '{#MSSQLDBNAME} Status'
+              type: ZABBIX_ACTIVE
+              key: 'discovery.mssql.dados[STATUS,{#MSSQLDBNAME}]'
+              delay: '600'
+              history: 7d
+              trends: 30d
+              description: 'Monitora o Status da Database MSSQL - {#MSSQLDBNAME}'
+              valuemap:
+                name: '★ STATUS ★ MSSQL Databases'
+              tags:
+                -
+                  tag: Application
+                  value: '★ MSSQL ★ Database Info - {#MSSQLDBNAME}'
+              trigger_prototypes:
+                -
+                  uuid: a9d862844e0f4148b872a3206fb74198
+                  expression: 'last(/Template - Windows LLD MSSQL/discovery.mssql.dados[STATUS,{#MSSQLDBNAME}])>0'
+                  name: '{#MSSQLDBNAME} Status ({ITEM.LASTVALUE})'
+                  priority: HIGH
+                  description: |
+                    SQLServer
+                    Status da Database {#MSSQLDBNAME} é {ITEM.LASTVALUE}
+                    
+                    Status Possíveis:
+                    0 ⇒ ONLINE
+                    1 ⇒ RESTAURAÇÃO
+                    2 ⇒ RECUPERANDO
+                    3 ⇒ RECUPERAÇÃO PENDENTE
+                    4 ⇒ SUSPEITO
+                    5 ⇒ EMERGÊNCIA
+                    6 ⇒ OFFLINE
+                    7 ⇒ NÃO EXISTE
+            -
+              uuid: d6dde7cd2af148949e7ef8e917b954c2
+              name: '{#MSSQLDBNAME} Tamanho da Database'
+              type: ZABBIX_ACTIVE
+              key: 'perf_counter[\{$MSSQLINST}:Databases({#MSSQLDBNAME})\Data File(s) Size (KB)]'
+              delay: '3600'
+              history: 15d
+              trends: 90d
+              units: B
+              description: |
+                Detecta o Tamanho Total do Banco.
+                perf_counter[\{$MSSQLINST}:Databases({#MSSQLDBNAME})\Data File(s) Size (KB)]
+              preprocessing:
+                -
+                  type: MULTIPLIER
+                  parameters:
+                    - '1024'
+              tags:
+                -
+                  tag: Application
+                  value: '★ MSSQL ★ Database Info - {#MSSQLDBNAME}'
+            -
+              uuid: aca7f565b5714109864a97231cd14a1b
+              name: '{#MSSQLDBNAME} Tamanho do Log'
+              type: ZABBIX_ACTIVE
+              key: 'perf_counter[\{$MSSQLINST}:Databases({#MSSQLDBNAME})\Log File(s) Size (KB)]'
+              delay: '3600'
+              history: 15d
+              trends: 90d
+              units: B
+              description: |
+                Tamanho Total do Arquivo de Log.
+                perf_counter[\{$MSSQLINST}:Databases({#MSSQLDBNAME})\Log File(s) Size (KB)]
+              preprocessing:
+                -
+                  type: MULTIPLIER
+                  parameters:
+                    - '1024'
+              tags:
+                -
+                  tag: Application
+                  value: '★ MSSQL ★ Database Info - {#MSSQLDBNAME}'
+          graph_prototypes:
+            -
+              uuid: 084c959316fd4cd6843c46633c8d31be
+              name: '★ MSSQL ★ Número de Conexões em {#MSSQLDBNAME}'
+              show_work_period: 'NO'
+              graph_items:
+                -
+                  drawtype: GRADIENT_LINE
+                  color: 0099CC
+                  yaxisside: RIGHT
+                  calc_fnc: ALL
+                  item:
+                    host: 'Template - Windows LLD MSSQL'
+                    key: 'discovery.mssql.dados[CONN,{#MSSQLDBNAME}]'
+            -
+              uuid: 94d79f0183624df6a06614aa23371152
+              name: '★ MSSQL ★ Status em {#MSSQLDBNAME}'
+              show_work_period: 'NO'
+              graph_items:
+                -
+                  drawtype: GRADIENT_LINE
+                  color: 0099CC
+                  yaxisside: RIGHT
+                  calc_fnc: ALL
+                  item:
+                    host: 'Template - Windows LLD MSSQL'
+                    key: 'discovery.mssql.dados[STATUS,{#MSSQLDBNAME}]'
+            -
+              uuid: 76ed75a065ec40b5afe1e9b62a933d78
+              name: '★ MSSQL ★ Tamanho da Database e Log em {#MSSQLDBNAME}'
+              show_work_period: 'NO'
+              graph_items:
+                -
+                  drawtype: GRADIENT_LINE
+                  color: 00C800
+                  calc_fnc: ALL
+                  item:
+                    host: 'Template - Windows LLD MSSQL'
+                    key: 'perf_counter[\{$MSSQLINST}:Databases({#MSSQLDBNAME})\Data File(s) Size (KB)]'
+                -
+                  sortorder: '1'
+                  drawtype: GRADIENT_LINE
+                  color: 0099CC
+                  yaxisside: RIGHT
+                  calc_fnc: ALL
+                  item:
+                    host: 'Template - Windows LLD MSSQL'
+                    key: 'perf_counter[\{$MSSQLINST}:Databases({#MSSQLDBNAME})\Log File(s) Size (KB)]'
+        -
+          uuid: e5d5b5fe066846bbb583b8c32c1291e2
+          name: '★ Descoberta ★ MSSQL Jobs'
+          type: ZABBIX_ACTIVE
+          key: discovery.mssql.jobs
+          delay: 30m
+          lifetime: 1d
+          description: 'Descoberta de Jobs do MSSQL Server'
+          item_prototypes:
+            -
+              uuid: a0c765503baf40ab8e36315f7a955eb5
+              name: 'Job {#MSSQLJOBNAME} Status'
+              type: ZABBIX_ACTIVE
+              key: 'discovery.mssql.dados[JOBSTATUS,{#MSSQLJOBNAME}]'
+              delay: '3600'
+              history: 15d
+              trends: 30d
+              description: 'Monitora Status dos Jobs SQLSERVER.'
+              valuemap:
+                name: '★ STATUS ★ MSSQL Jobs'
+              tags:
+                -
+                  tag: Application
+                  value: '★ MSSQL ★ Jobs Status'
+              trigger_prototypes:
+                -
+                  uuid: 0dc0e12fb1cc45f999c7acd0ca000b86
+                  expression: 'count(/Template - Windows LLD MSSQL/discovery.mssql.dados[JOBSTATUS,{#MSSQLJOBNAME}],180m,,"0")>=3'
+                  name: 'Job {#MSSQLJOBNAME} ({ITEM.LASTVALUE})'
+                  priority: HIGH
+                  description: |
+                    SQLServer
+                    Status do Job {#MSSQLJOBNAME} é {ITEM.LASTVALUE}
+                    
+                    Status Possíveis:
+                    0 = Falha
+                    1 = Sucesso
+                    2 = Repetir
+                    3 = Cancelado
+                    4 = Em Progresso
+                    5 = Nunca Executado
+                -
+                  uuid: b6646c0b48514dd18b258ded078761f7
+                  expression: 'last(/Template - Windows LLD MSSQL/discovery.mssql.dados[JOBSTATUS,{#MSSQLJOBNAME}])=2'
+                  name: 'Job {#MSSQLJOBNAME} ({ITEM.LASTVALUE})'
+                  priority: INFO
+                  description: |
+                    SQLServer
+                    Status do Job {#MSSQLJOBNAME} é {ITEM.LASTVALUE}
+                    
+                    Status Possíveis:
+                    0 = Falha
+                    1 = Sucesso
+                    2 = Repetir
+                    3 = Cancelado
+                    4 = Em Progresso
+                    5 = Nunca Executado
+                -
+                  uuid: 77434ba5a5fc40ee91e3b4cd90d50ecd
+                  expression: 'last(/Template - Windows LLD MSSQL/discovery.mssql.dados[JOBSTATUS,{#MSSQLJOBNAME}])=3'
+                  name: 'Job {#MSSQLJOBNAME} ({ITEM.LASTVALUE})'
+                  priority: WARNING
+                  description: |
+                    SQLServer
+                    Status do Job {#MSSQLJOBNAME} é {ITEM.LASTVALUE}
+                    
+                    Status Possíveis:
+                    0 = Falha
+                    1 = Sucesso
+                    2 = Repetir
+                    3 = Cancelado
+                    4 = Em Progresso
+                    5 = Nunca Executado
+                -
+                  uuid: d439a25e5b60458d946bd016c15a69a8
+                  expression: 'last(/Template - Windows LLD MSSQL/discovery.mssql.dados[JOBSTATUS,{#MSSQLJOBNAME}])=5'
+                  name: 'Job {#MSSQLJOBNAME} ({ITEM.LASTVALUE})'
+                  status: DISABLED
+                  discover: NO_DISCOVER
+                  priority: AVERAGE
+                  description: |
+                    SQLServer
+                    Status do Job {#MSSQLJOBNAME} é {ITEM.LASTVALUE}
+                    
+                    Status Possíveis:
+                    0 = Falha
+                    1 = Sucesso
+                    2 = Repetir
+                    3 = Cancelado
+                    4 = Em Progresso
+                    5 = Nunca Executado
+      valuemaps:
+        -
+          uuid: 0714a43f48f7423896b1da72794e3d9e
+          name: '★ STATUS ★ Check Porta'
+          mappings:
+            -
+              value: '0'
+              newvalue: Inacessível
+            -
+              value: '1'
+              newvalue: Aberta
+        -
+          uuid: 4fb262d0a41d4021b6a13a96745ee55c
+          name: '★ STATUS ★ MSSQL Databases'
+          mappings:
+            -
+              value: '0'
+              newvalue: ONLINE
+            -
+              value: '1'
+              newvalue: RESTAURAÇÃO
+            -
+              value: '2'
+              newvalue: RECUPERANDO
+            -
+              value: '3'
+              newvalue: 'RECUPERAÇÃO PENDENTE'
+            -
+              value: '4'
+              newvalue: SUSPEITO
+            -
+              value: '5'
+              newvalue: EMERGÊNCIA
+            -
+              value: '6'
+              newvalue: OFFLINE
+            -
+              value: '7'
+              newvalue: 'NÃO EXISTE'
+        -
+          uuid: 70a2ac0bf9a147a29f8d723d755164b8
+          name: '★ STATUS ★ MSSQL Jobs'
+          mappings:
+            -
+              value: '0'
+              newvalue: Falha
+            -
+              value: '1'
+              newvalue: Sucesso
+            -
+              value: '2'
+              newvalue: Repetir
+            -
+              value: '3'
+              newvalue: Cancelado
+            -
+              value: '4'
+              newvalue: 'Em Progresso'
+            -
+              value: '5'
+              newvalue: 'Nunca Executado'
+        -
+          uuid: cda4ad1a1f0f4f9186682ad6e2fe5097
+          name: '★ STATUS ★ Serviço'
+          mappings:
+            -
+              value: '0'
+              newvalue: Iniciado
+            -
+              value: '1'
+              newvalue: Pausado
+            -
+              value: '2'
+              newvalue: 'Iniciar Pendente'
+            -
+              value: '3'
+              newvalue: 'Pausa Pendente'
+            -
+              value: '4'
+              newvalue: 'Continuar Pendente'
+            -
+              value: '5'
+              newvalue: 'Parar Pendente'
+            -
+              value: '6'
+              newvalue: Parado
+            -
+              value: '7'
+              newvalue: Desconhecido
+            -
+              value: '255'
+              newvalue: Desconhecido
+  graphs:
+    -
+      uuid: cd91eeab85f74040a90ce0e4a56759bc
+      name: '★ MSSQL ★ Estatísticas'
+      graph_items:
+        -
+          color: 6C59DC
+          yaxisside: RIGHT
+          calc_fnc: ALL
+          item:
+            host: 'Template - Windows LLD MSSQL'
+            key: 'perf_counter[\{$MSSQLINST}:Buffer Manager\Checkpoint pages/sec]'
+        -
+          sortorder: '1'
+          color: AC8C14
+          yaxisside: RIGHT
+          calc_fnc: ALL
+          item:
+            host: 'Template - Windows LLD MSSQL'
+            key: 'perf_counter[\{$MSSQLINST}:Buffer Manager\Database pages]'
+        -
+          sortorder: '2'
+          color: 611F27
+          yaxisside: RIGHT
+          calc_fnc: ALL
+          item:
+            host: 'Template - Windows LLD MSSQL'
+            key: 'perf_counter[\{$MSSQLINST}:SQL Errors(_Total)\Errors/sec]'
+        -
+          sortorder: '3'
+          color: F230E0
+          yaxisside: RIGHT
+          calc_fnc: ALL
+          item:
+            host: 'Template - Windows LLD MSSQL'
+            key: 'perf_counter[\{$MSSQLINST}:Buffer Manager\Lazy writes/sec]'
+        -
+          sortorder: '4'
+          color: 5CCD18
+          yaxisside: RIGHT
+          calc_fnc: ALL
+          item:
+            host: 'Template - Windows LLD MSSQL'
+            key: 'perf_counter[\{$MSSQLINST}:Locks(_Total)\Lock Waits/sec]'
+        -
+          sortorder: '5'
+          color: BB2A02
+          yaxisside: RIGHT
+          calc_fnc: ALL
+          item:
+            host: 'Template - Windows LLD MSSQL'
+            key: 'perf_counter[\{$MSSQLINST}:Buffer Manager\Page life expectancy]'
+        -
+          sortorder: '6'
+          color: 5A2B57
+          yaxisside: RIGHT
+          calc_fnc: ALL
+          item:
+            host: 'Template - Windows LLD MSSQL'
+            key: 'perf_counter[\Process(sqlservr)\% Processor Time]'
+        -
+          sortorder: '7'
+          color: 89ABF8
+          yaxisside: RIGHT
+          calc_fnc: ALL
+          item:
+            host: 'Template - Windows LLD MSSQL'
+            key: 'perf_counter[\{$MSSQLINST}:SQL Statistics\SQL Compilations/sec]'
+        -
+          sortorder: '8'
+          color: 7EC25C
+          yaxisside: RIGHT
+          calc_fnc: ALL
+          item:
+            host: 'Template - Windows LLD MSSQL'
+            key: 'perf_counter[\{$MSSQLINST}:Buffer Manager\Target pages]'
+        -
+          sortorder: '9'
+          color: '274482'
+          yaxisside: RIGHT
+          calc_fnc: ALL
+          item:
+            host: 'Template - Windows LLD MSSQL'
+            key: 'perf_counter[\{$MSSQLINST}:General Statistics\User Connections]'
+        -
+          sortorder: '10'
+          color: 2B5429
+          yaxisside: RIGHT
+          calc_fnc: ALL
+          item:
+            host: 'Template - Windows LLD MSSQL'
+            key: 'perf_counter[\{$MSSQLINST}:Buffer Manager\Total pages]'
+    -
+      uuid: 6ac7b21ef113447fa2f09e5cb8b2ee40
+      name: '★ MSSQL ★ Tamanho Total das Databases e Logs'
+      graph_items:
+        -
+          drawtype: GRADIENT_LINE
+          color: 5A2B57
+          yaxisside: RIGHT
+          calc_fnc: ALL
+          item:
+            host: 'Template - Windows LLD MSSQL'
+            key: 'perf_counter[\{$MSSQLINST}:Databases(_Total)\Data File(s) Size (KB)]'
+        -
+          sortorder: '1'
+          drawtype: GRADIENT_LINE
+          color: 89ABF8
+          yaxisside: RIGHT
+          calc_fnc: ALL
+          item:
+            host: 'Template - Windows LLD MSSQL'
+            key: 'perf_counter[\{$MSSQLINST}:Databases(_Total)\Log File(s) Size (KB)]'
+    -
+      uuid: 4be57b736d40418781d35d60f7f7cc4a
+      name: '★ MSSQL ★ Uso de Memória'
+      graph_items:
+        -
+          drawtype: BOLD_LINE
+          color: FC6EA3
+          yaxisside: RIGHT
+          calc_fnc: ALL
+          item:
+            host: 'Template - Windows LLD MSSQL'
+            key: 'perf_counter[\Process(sqlservr)\Private Bytes]'
+        -
+          sortorder: '1'
+          drawtype: BOLD_LINE
+          color: A54F10
+          yaxisside: RIGHT
+          calc_fnc: ALL
+          item:
+            host: 'Template - Windows LLD MSSQL'
+            key: 'perf_counter[\{$MSSQLINST}:Memory Manager\SQL Cache Memory (KB)]'
+        -
+          sortorder: '2'
+          drawtype: BOLD_LINE
+          color: 2774A4
+          yaxisside: RIGHT
+          calc_fnc: ALL
+          item:
+            host: 'Template - Windows LLD MSSQL'
+            key: 'perf_counter[\{$MSSQLINST}:Buffer Manager\Buffer cache hit ratio]'
+        -
+          sortorder: '3'
+          drawtype: BOLD_LINE
+          color: 6C59DC
+          yaxisside: RIGHT
+          calc_fnc: ALL
+          item:
+            host: 'Template - Windows LLD MSSQL'
+            key: 'perf_counter[\{$MSSQLINST}:Memory Manager\Memory Grants Pending]'
+        -
+          sortorder: '4'
+          drawtype: BOLD_LINE
+          color: AC8C14
+          yaxisside: RIGHT
+          calc_fnc: ALL
+          item:
+            host: 'Template - Windows LLD MSSQL'
+            key: 'perf_counter[\{$MSSQLINST}:Memory Manager\Target Server Memory (KB)]'
